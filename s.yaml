@@ -11,13 +11,13 @@ services:
         - run: go mod tidy
           path: .
         - run: GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o target/main main.go
-          path: .
+          path: ./cmd/aliyun-fs-gin
     props:
       region: cn-hongkong
       service:
         name: aliyun-fs-gin
       function:
-        codeUri: ./target
+        codeUri: ./cmd/aliyun-fs-gin/target
         name: aliyun-fs-gin
         description: Initialize
         runtime: custom.debian10
