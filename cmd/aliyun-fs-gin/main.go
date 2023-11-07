@@ -8,9 +8,13 @@ import (
 	"time"
 
 	"github.com/labstack/echo/v4"
+	zapLog "go.uber.org/zap"
 )
 
 func main() {
+	logger, _ := zapLog.NewProduction()
+	defer logger.Sync()
+
 	e := echo.New()
 	e.GET("/ping", func(c echo.Context) error {
 		return c.String(http.StatusOK, "/ping")
