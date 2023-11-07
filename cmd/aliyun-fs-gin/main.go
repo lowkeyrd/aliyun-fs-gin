@@ -2,22 +2,42 @@ package main
 
 import (
 	"context"
-	"net/http"
 	"os"
 	"os/signal"
 	"time"
 
+	"github.com/99designs/gqlgen/graphql/handler"
+	"github.com/99designs/gqlgen/graphql/playground"
+	"github.com/labstack/echo/middleware"
 	"github.com/labstack/echo/v4"
+	"go.uber.org/zap"
 )
 
+// Defining the Graphql handler
+func graphqlHandler(logger *zap.Logger) echo.HandlerFunc {
+	srv := handler.NewDefaultServer()
+	return func(c echo.Context) error {
+		srv.ServeHTTP(c.Response(), c.Request())
+		return nil
+	}
+}
+
+func playgroundHandler() echo.HandlerFunc {
+	h := playground.Handler("GraphQL playground", "/")
+	return func(c echo.Context) error {
+		h.ServeHTTP(c.Response(), c.Request())
+		return nil
+	}
+}
+
 func main() {
+	logger, _ := zap.NewProduction()
+	defer logger.Sync()
+
 	r := echo.New()
-	r.GET("/ping", func(c echo.Context) error {
-		return c.String(http.StatusOK, "/ping")
-	})
-	r.GET("/", func(c echo.Context) error {
-		return c.String(http.StatusOK, "hello world")
-	})
+	r.GET("/", playgroundHandler())
+	//r.POST("/", graphqlHandler(client, logger))
+	r.POST("/", graphqlHandler(logger), middleware.JWT([]byte("AA")))
 	// listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 
 	// Start server
