@@ -10,13 +10,14 @@ services:
           path: .
         - run: go mod tidy
           path: .
-        - run: go build ./main.go
+        - run: GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o target/main main.go
           path: .
     props:
       region: cn-hongkong
       service:
         name: aliyun-fs-gin
       function:
+        codeUri: ./target
         name: aliyun-fs-gin
         description: Initialize
         runtime: custom.debian10
@@ -29,7 +30,7 @@ services:
         caPort: 8080
         customRuntimeConfig:
           command:
-            - main
+            - '/code/main'
       triggers:
         - name: httpTrigger
           type: http
