@@ -1,6 +1,6 @@
 module aliyun-fs-gin
 
-go 1.20
+go 1.18
 
 require (
 	github.com/bytedance/sonic v1.10.2 // indirect
