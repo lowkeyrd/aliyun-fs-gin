@@ -10,6 +10,8 @@ services:
           path: .
         - run: go mod tidy
           path: .
+        - run: go get -u github.com/labstack/echo/v4/middleware
+          path: .
         - run: GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o target/main main.go
           path: ./cmd/aliyun-fs-gin
     props:
