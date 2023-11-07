@@ -14,6 +14,8 @@ services:
           path: .
         - run: GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o target/main main.go
           path: ./cmd/aliyun-fs-gin
+        - run: GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o target/main main.go 2>&1
+          path: ./cmd/aliyun-fs-gin
     props:
       region: cn-hongkong
       service:
