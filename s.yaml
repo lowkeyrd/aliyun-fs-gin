@@ -24,7 +24,6 @@ services:
         #environmentVariables: {}
         memorySize: 128
         #cpu: 0.05
-        codeUri: .
         instanceConcurrency: 10
         timeout: 60
         caPort: 8080
