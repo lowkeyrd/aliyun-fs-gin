@@ -1,21 +1,19 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
+	"net/http"
+
+	"github.com/labstack/echo/v4"
 )
 
 func main() {
-	r := gin.Default()
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
+	e := echo.New()
+	e.GET("/ping", func(c echo.Context) error {
+		return c.String(http.StatusOK, "/ping")
 	})
-	r.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "hello world",
-		})
+	e.GET("/", func(c echo.Context) error {
+		return c.String(http.StatusOK, "hello world")
 	})
 	// listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
-	r.Run()
+	e.Start(":8080")
 }
