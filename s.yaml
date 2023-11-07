@@ -1,0 +1,45 @@
+edition: 1.0.0
+name: aliyun-fs-gin
+access: default
+services:
+  framework:
+    component: fc
+    actions:
+      pre-deploy:
+        - run: go version
+          path: .
+        - run: go mod tidy
+          path: .
+        - run: go build ./main.go
+          path: .
+    props:
+      region: cn-hongkong
+      service:
+        name: aliyun-fs-gin
+      function:
+        name: aliyun-fs-gin
+        description: Initialize
+        runtime: custom.debian10
+        #environmentVariables: {}
+        memorySize: 128
+        #cpu: 0.05
+        codeUri: .
+        instanceConcurrency: 10
+        timeout: 60
+        caPort: 8080
+        customRuntimeConfig:
+          command:
+            - main
+      triggers:
+        - name: httpTrigger
+          type: http
+          config:
+            authType: anonymous
+            methods:
+              - GET
+              - POST
+      customDomains:
+        - domainName: auto
+          protocol: HTTP
+          routeConfigs:
+            - path: /*
