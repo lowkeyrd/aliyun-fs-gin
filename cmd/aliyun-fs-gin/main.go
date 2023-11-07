@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"net/http"
 	"os"
 	"os/signal"
 	"time"
@@ -10,7 +9,6 @@ import (
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/labstack/echo/v4"
-	echoMiddleware "github.com/labstack/echo/v4/middleware"
 	"go.uber.org/zap"
 )
 
@@ -36,14 +34,6 @@ func main() {
 	defer logger.Sync()
 
 	r := echo.New()
-
-	r.Use(echoMiddleware.CORSWithConfig(echoMiddleware.CORSConfig{
-		AllowOrigins: []string{"*"},
-		AllowMethods: []string{http.MethodGet, http.MethodPost},
-	}))
-
-	//r.Use(echoMiddleware.Logger())
-	r.Use(echoMiddleware.Recover())
 
 	r.GET("/", playgroundHandler())
 	//r.POST("/", graphqlHandler(client, logger))
